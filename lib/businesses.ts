@@ -61,7 +61,16 @@ type CsvDocument = {
 };
 
 function getDataDirectoryPath() {
-  return process.env.BUSINESS_DATA_DIR ?? path.join(process.cwd(), "data");
+  const configuredDirectory = process.env.BUSINESS_DATA_DIR?.trim();
+
+  if (
+    configuredDirectory &&
+    fs.existsSync(configuredDirectory)
+  ) {
+    return configuredDirectory;
+  }
+
+  return path.join(process.cwd(), "data");
 }
 
 function getCsvFilePath() {
